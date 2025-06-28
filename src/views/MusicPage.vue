@@ -60,7 +60,7 @@ import { ref } from 'vue';
 const comments = ref([]);
 const newComment = ref('');
 
-const phoneNumber = '521XXXXXXXXXX'; // ← Cambia por tu número de WhatsApp incluyendo código país sin +
+const phoneNumber = import.mneta.env.VITE_WHATSAPP_PHONE;
 // Ej: '5215551234567' (para México)
 
 const submitComment = () => {
