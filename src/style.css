@@ -1,0 +1,51 @@
+/* src/style.css */
+/* Importa la fuente Inter de Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Caveat:wght@400..700&family=Pacifico&display=swap');
+/* Directivas de Tailwind CSS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estilos personalizados (si los necesitas, irán aquí abajo) */
+
+/*
+   Por defecto, Tailwind CSS ya incluye un "preflight" (reset de estilos)
+   que se aplica con `@tailwind base;`. Esto es suficiente para la mayoría
+   de los casos y es lo que queremos. No necesitas un reset adicional como
+   `* { margin: 0; padding: 0; box-sizing: border-box; }` a menos que tengas
+   necesidades muy específicas que no cubra el preflight de Tailwind.
+
+   Lo que sí haremos es aplicar Inter como fuente predeterminada.
+*/
+
+html, body {
+  font-family: "Caveat Brush", cursive;
+  @apply bg-gray-50;
+}
+
+/* Ejemplo de cómo añadir una clase personalizada si lo necesitaras más adelante */
+/*
+.mi-clase-personalizada {
+  @apply text-blue-600 font-bold;
+  border: 1px solid theme('colors.gray.300');
+}
+*/
+
+/* Puedes añadir estilos globales si los necesitas, aunque Tailwind se encarga de la mayoría */
+#default-layout p{
+  @apply text-gray-800 dark:text-gray-200 ;
+}
+
+
+span{
+  @apply text-purple-500;
+}
+
+
+h1{
+  @apply font-caveat-brush font-bold;
+}
+
+p{
+  @apply font-pacifico text-base;
+}
