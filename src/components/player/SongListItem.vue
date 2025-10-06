@@ -10,7 +10,7 @@
   >
 
     <div
-      class="relative max-h-full min-w-8 max-w-10 grid place-content-center"
+      class="relative min-w-8 max-w-10 grid place-content-center"
       @click.stop
     >
       <font-awesome-icon
@@ -24,8 +24,8 @@
         <div
           v-if="isOptionsOpen"
           ref="optionsMenuRef"
-          class="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg shadow-lg z-50
-                 transition-colors duration-500 p-2 text-sm"
+          class="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg shadow-xl z-50
+                 transition-colors duration-500 p-2 text-sm whitespace-nowrap"
           @click.stop
         >
           <ul class="space-y-1">

@@ -17,7 +17,7 @@ defineProps({
         class="absolute inset-0 rounded-xl overflow-hidden bg-center bg-cover  shadow-xl transition-all duration-500 border border-gray-300 dark:border-gray-600"
         :style="{ backgroundImage: `url(${frontImage})` }"
       >
-        <div class="h-full w-full bg-black/40 flex items-center justify-center p-4 text-white text-xl font-semibold backdrop-blur-sm">
+        <div class="h-full w-full bg-black/40 flex items-center justify-center p-4 text-white text-xl font-semibold hover:backdrop-blur-sm">
           {{ title }}
         </div>
       </div>

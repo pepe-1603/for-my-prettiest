@@ -1,48 +1,47 @@
 <script setup>
 // src/App.vue
-// Este componente ahora es el layout principal de tu aplicación
+import { ref } from 'vue'
+import WelcomeModal from './components/modals/WelcomeModal.vue'
 import SettingsDropdown from './components/SettingsDropdown.vue'
+
+// ESTADO PARA CONTROLAR EL MODAL... (se mantiene igual)
+const hasSeenIntro = sessionStorage.getItem('hasSeenIntro') === 'true'
+const showIntroModal = ref(!hasSeenIntro)
+
+// FUNCIÓN PARA CERRAR Y MARCAR COMO VISTO... (se mantiene igual)
+const handleCloseIntro = () => {
+  showIntroModal.value = false
+  sessionStorage.setItem('hasSeenIntro', 'true')
+}
 </script>
 
 <template>
-  <div id="default-layout" class="relative min-h-screen transition-colors duration-500 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-    
-    <!-- Menú en esquina superior derecha -->
+  <div
+    id="default-layout"
+    class="relative min-h-screen transition-colors duration-500 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+  >
     <div class="absolute top-4 right-4 z-50">
       <SettingsDropdown />
     </div>
-
-    <!-- Vista de rutas -->
+    
     <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in">
-        <component :is="Component" />
+        <component :is="Component" :key="$route.fullPath" />
       </transition>
     </router-view>
+
+    <WelcomeModal :is-visible="showIntroModal" @close="handleCloseIntro" />
+    
   </div>
 </template>
 
 <style scoped>
-
-/* --- Estilos para la Transición Fade --- */
-
-/* Estado inicial y final para la entrada */
-.fade-enter-from {
-  opacity: 0;
-}
-.fade-enter-active {
-  transition: opacity 0.5s ease-out; /* Duración y curva de la animación de entrada */
-}
-.fade-enter-to {
-  opacity: 1;
-}
-
-/* Estado inicial y final para la salida */
-.fade-leave-from {
-  opacity: 1;
-}
+/* ... (Estilos de Transición Fade se mantienen iguales) ... */
+.fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s ease-in; /* Duración y curva de la animación de salida */
+  transition: opacity 0.5s ease;
 }
+.fade-enter-from,
 .fade-leave-to {
   opacity: 0;
 }
