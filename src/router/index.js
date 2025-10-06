@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '../views/HomePage.vue'; // Puedes crear esta vista para la ruta raíz
-import CardsGalleryPage from '../views/CardsGalleryPage.vue';
 import MusicPage from '../views/MusicPage.vue';
 import ImageViewerPage from '../views/ImageViewerPage.vue'
 
@@ -13,7 +12,8 @@ const routes = [
   {
     path: '/cards-gallery',
     name: 'cards-gallery',
-    component: CardsGalleryPage,
+    // 🟢 Aplicar Lazy Loading para usar Suspense
+    component: () => import('../views/CardsGalleryPage.vue'), 
   },
   {
     path: '/playlist',
