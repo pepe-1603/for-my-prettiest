@@ -6,7 +6,6 @@ import { ref, computed } from "vue"; // Importamos 'computed' para el enlace de 
 const comments = ref([]);
 const newComment = ref("");
 
-// Importamos el número de teléfono desde las variables de entorno
 const phoneNumber = import.meta.env.VITE_WHATSAPP_PHONE;
 // Ej: '5215551234567' (para México)
 
