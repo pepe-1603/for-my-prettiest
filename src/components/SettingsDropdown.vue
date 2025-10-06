@@ -1,32 +1,31 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue'; // Asegúrate de importar onBeforeUnmount
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue'; // Importa 'computed'
 import ThemeSwitch from './ThemeSwitch.vue';
 import { useRouter } from 'vue-router';
+import { SunIcon, MoonIcon } from '@heroicons/vue/24/solid'; 
+import { useThemeStore } from '@/stores/useThemeStore'; // Ajusta la ruta
 
 const router = useRouter();
+const themeStore = useThemeStore(); // Inicializa el store
 
 const isOpen = ref(false);
-const isDark = ref(false);
 
-const THEME_KEY = 'theme';
+// **NUEVO: Consumir el estado de Pinia**
+const isDark = computed(() => themeStore.isDark); 
 
-// Referencias a los elementos del DOM para detectar clics fuera
 const dropdownButtonRef = ref(null);
 const dropdownMenuRef = ref(null);
 
 const redirectToHome = () => {
-  router.push('/');
-  isOpen.value = false; // Cierra el menú al navegar
+  router.push({ name: 'home'});
+  isOpen.value = false;
 };
 
 function toggleDropdown() {
   isOpen.value = !isOpen.value;
 }
 
-// --- Lógica mejorada para cerrar al hacer clic fuera ---
 const handleClickOutside = (event) => {
-  // Si el menú está abierto Y el clic no fue en el botón del menú
-  // Y el clic no fue dentro del propio menú desplegable
   if (
     isOpen.value &&
     dropdownButtonRef.value && !dropdownButtonRef.value.contains(event.target) &&
@@ -37,30 +36,15 @@ const handleClickOutside = (event) => {
 };
 
 onMounted(() => {
-  const saved = localStorage.getItem(THEME_KEY);
-  if (saved === 'dark') {
-    isDark.value = true;
-  } else if (saved === 'light') {
-    isDark.value = false;
-  } else {
-    isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  }
-
-  document.documentElement.classList.toggle('dark', isDark.value);
-
-  // Añadir el listener al document cuando el componente se monta
+  // Se eliminó la lógica de tema/localStorage
   document.addEventListener('click', handleClickOutside);
 });
 
 onBeforeUnmount(() => {
-  // Limpiar el listener al desmontar el componente para evitar fugas de memoria
   document.removeEventListener('click', handleClickOutside);
 });
+// Se elimina todo el `watch` de `isDark`
 
-watch(isDark, (val) => {
-  localStorage.setItem(THEME_KEY, val ? 'dark' : 'light');
-  document.documentElement.classList.toggle('dark', val);
-});
 </script>
 
 <template>
@@ -68,7 +52,7 @@ watch(isDark, (val) => {
     <button
       @click="toggleDropdown"
       ref="dropdownButtonRef" class="relative flex items-center p-2 rounded-full border border-transparent hover:border-gray-200 dark:hover:border-gray-800 transition-colors duration-300
-             text-gray-800 dark:text-white"
+              text-gray-800 dark:text-white"
       aria-label="Abrir menú de configuración"
     >
       <font-awesome-icon :icon="['fas', 'gear']" class="text-gray-400 h-5 w-5 hover:animate-spin" />
@@ -78,7 +62,7 @@ watch(isDark, (val) => {
       <div
         v-if="isOpen"
         ref="dropdownMenuRef" class="absolute right-0 mt-2 w-64 sm:w-72 bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg shadow-lg z-50
-               transition-colors duration-500 p-4"
+                transition-colors duration-500 p-4"
         @click.stop >
         <h3 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">
           <font-awesome-icon :icon="['fas', 'gears']" class="text-purple-400 mr-2" /> Configuración
@@ -89,8 +73,12 @@ watch(isDark, (val) => {
             <div
             class="flex items-center justify-between w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition"
             >
-              <span>Tema</span>
-              <ThemeSwitch size="sm" v-model:is-dark="isDark" />
+              <span class="flex items-center gap-2 font-medium">
+                <MoonIcon v-if="isDark" class="w-5 h-5 text-gray-300" />
+                <SunIcon v-else class="w-5 h-5 text-yellow-600" />
+                Tema
+              </span>
+              <ThemeSwitch size="sm" /> 
             </div>
           </li>
           <li>
@@ -102,7 +90,7 @@ watch(isDark, (val) => {
           </li>
           <li>
             <button @click="redirectToHome"
-              class="w-full flex items-center justify-center text-left px-3 py-2 text-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+              class="w-full flex items-center justify-center px-3 py-2 text-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition"
             >
               <font-awesome-icon :icon="['fas', 'reply']" class="size-4 mr-2" /> Ir al inicio
             </button>
@@ -112,14 +100,3 @@ watch(isDark, (val) => {
     </transition>
   </div>
 </template>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

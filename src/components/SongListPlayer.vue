@@ -6,17 +6,20 @@
     </section>
 
     <section class="p-2">
-      <ul id="playlist" class="flex-1 flex flex-col items-center h-fit sm:max-h-[560px] overflow-y-auto ">
-        <SongListItem
-          v-for="song in songs"
-          :key="song.id"
-          :song="song"
-          :isPlaying="currentPlayingSongId === song.id && !isPaused"
-          @play-song="playSong"
-          @pause-song="pauseSong"
-          @open-download-modal="openDownloadModal" @open-more-info-modal="openNotificationModal" :rotateContent="false"
+      <div class="flex-1 flex flex-col items-center h-fit sm:max-h-[560px] overflow-y-auto">
+        <ul id="playlist" class="w-full"> <SongListItem
+            v-for="song in songs"
+            :key="song.id"
+            :song="song"
+            :isPlaying="currentPlayingSongId === song.id && !isPaused"
+            @play-song="playSong"
+            @pause-song="pauseSong"
+            @open-download-modal="openDownloadModal" 
+            @open-more-info-modal="openNotificationModal" 
+            :rotateContent="false"
           />
-      </ul>
+        </ul>
+      </div>
     </section>
 
     <div v-if="currentSong" class="mt-8 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-inner">

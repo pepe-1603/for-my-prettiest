@@ -1,51 +1,28 @@
-<script setup>
+<script setup name="HomePage">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
-import ThemedCard from '../components/ThemedCard.vue'; // Asegúrate de la ruta correcta
+import ThemedCard from '../components/ThemedCard.vue';
 import { useRouter } from 'vue-router';
+import { useThemeStore } from '../stores/useThemeStore';
 
+
+const themeStore = useThemeStore();
 
 const dedicatedCardProps = {
-  title: "Para la Niña Más Linda del Universo 💖",
-  description: "Pequeña mi pequeña exploradora, cada rincón de esta aplicación fue pensado con una sonrisa, con la magia de tus ojos y la alegría que irradias. Es un pequeño universo digital, creado con el mismo cariño con el que te miro cada día.",
-  secondaryDescription: "Aquí podrás encontrar melodías que te hagan sentir bonito, imágenes que cuenten historias sin palabras y sorpresas que te esperan en cada esquina. Que este espacio te inspire tanta felicidad como tú me das a mí.",
-  linkText: "¡Comienza la Aventura!",
-  linkTo: { name: 'playlist' }, // Define la ruta a donde quieres que vaya<font-awesome-icon :icon="['fas', 'user-astronaut']" />
-  linkIcon: ['fas', 'user-astronaut'], 
+    title: "Para la Niña Más Linda del Universo 💖",
+    description: "Pequeña mi pequeña exploradora, cada rincón de esta aplicación fue pensado con una sonrisa, con la magia de tus ojos y la alegría que irradias. Es un pequeño universo digital, creado con el mismo cariño con el que te miro cada día.",
+    secondaryDescription: "Aquí podrás encontrar melodías que te hagan sentir bonito, imágenes que cuenten historias sin palabras y sorpresas que te esperan en cada esquina. Que este espacio te inspire tanta felicidad como tú me das a mí.",
+    linkText: "¡Comienza la Aventura!",
+    linkTo: { name: 'playlist' },
+    linkIcon: ['fas', 'user-astronaut'], 
 };
 
-const isDark = ref(document.documentElement.classList.contains('dark'));
+// **NUEVO: Consumir el estado de Pinia**
+const isDark = computed(() => themeStore.isDark); 
+
+// 'themeMode' ahora depende directamente del estado de Pinia
 const themeMode = computed(() => (isDark.value ? 'Oscuro' : 'Claro'));
 const router = useRouter();
 
-const updateThemeState = () => {
-  isDark.value = document.documentElement.classList.contains('dark');
-};
-
-const navigateTo = (routeName) => {
-  router.push({ name: routeName });
-};
-
-onMounted(() => {
-  window.addEventListener('themechange', updateThemeState);
-
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.attributeName === 'class') {
-        updateThemeState();
-      }
-    });
-  });
-
-  observer.observe(document.documentElement, { attributes: true });
-
-  onUnmounted(() => {
-    observer.disconnect();
-  });
-});
-
-onUnmounted(() => {
-  window.removeEventListener('themechange', updateThemeState);
-});
 </script>
 
 <template>
@@ -53,7 +30,7 @@ onUnmounted(() => {
     
     <section class="text-center mb-8">
       <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white transition-colors duration-500 mb-4">
-        Bienvenida al Modo {{ themeMode }}
+        Bienvenida, te encuentras en el  Modo {{ themeMode }}
       </h1>
       <p class="text-lg sm:text-xl font-medium text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
         **En este rincón digital, cada clic es un paso hacia un nuevo horizonte. ¿Listo para explorar?**

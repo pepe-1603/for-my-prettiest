@@ -3,6 +3,11 @@ import './style.css'
 import App from './App.vue'
 //importar router
 import router from './router'
+
+// --- IMPORTACIÓN DE PINIA Y STORE ---
+import { createPinia } from 'pinia'
+import { useThemeStore } from './stores/useThemeStore'
+// ------------------------------------
 /**
  * importar aos para transiocn de scrool
  * 
@@ -35,9 +40,15 @@ library.add(fas)
 
 //registro de componetess globales
 const app = createApp(App);
+const pinia = createPinia(); // Crea la instancia de Pinia
 app.component('font-awesome-icon', FontAwesomeIcon) // ¡Ahora puedes usar <font-awesome-icon> en cualquier lugar!
 app.use(router)
+app.use(pinia) // Usa Pinia
 
+// --- CARGA DEL ESTADO DEL TEMA AL INICIO ---
+// Inicializa el estado después de crear la app y usar Pinia
+useThemeStore().initializeTheme();
+// ------------------------------------------
 
 app.mount('#app');
 
